@@ -1,9 +1,11 @@
 <?php
 
-namespace Moonlight\Tests;
+namespace Shovel\Tests;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Shovel\Tests\Models\Sample;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -12,12 +14,13 @@ abstract class TestCase extends BaseTestCase
         parent::setup();
 
         $this->app->setBasePath(__DIR__.'/../');
+        $this->createModels(150);
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            \Moonlight\MoonlightServiceProvider::class,
+            \Shovel\ShovelServiceProvider::class,
         ];
     }
 
@@ -29,5 +32,23 @@ abstract class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        Schema::dropIfExists('samples');
+        Schema::create('samples', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description');
+            $table->timestamps();
+        });
+    }
+
+    public function createModels($count)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            Sample::create([
+            'name' => "Shovel Model #{$i}",
+            'description' => 'Shovel Test Model'
+          ]);
+        }
     }
 }

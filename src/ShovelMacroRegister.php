@@ -103,9 +103,9 @@ class ShovelMacroRegister
 
     private function registerRequestSetErrorMacro()
     {
-        Request::macro('shovelError', function ($message, $code = false) {
+        Request::macro('shovelError', function ($code = 422, $message = null) {
             request()->shovelError = [
-              'message' => $message,
+              'message' => $message ?? ShovelMacroRegister::STATUS_CODES[$code],
               'code' => $code
             ];
 
@@ -122,7 +122,7 @@ class ShovelMacroRegister
 
     private function registerResponseShovelMacro()
     {
-        Response::macro('shovel', function ($object, $statusCode = 200, $overrideMessage = false) {
+        Response::macro('shovel', function ($object = null, $statusCode = 200, $overrideMessage = false) {
             if (Request::getShovelError()) {
                 return Response::make([
                   'meta' => [
