@@ -46,8 +46,8 @@ abstract class TestCase extends BaseTestCase
     {
         for ($i = 0; $i < $count; $i++) {
             Sample::create([
-            'name' => "Shovel Model #{$i}",
-            'description' => 'Shovel Test Model'
+            'name'        => "Shovel Model #{$i}",
+            'description' => 'Shovel Test Model',
           ]);
         }
     }
