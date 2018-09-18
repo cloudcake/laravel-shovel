@@ -127,10 +127,10 @@ class ShovelMacroRegister
                 return Response::make([
                   'meta' => [
                     'status'   => 'error',
-                    'message'  => Request::error('message', 'Something went wrong!'),
-                    'code'     => Request::error('code', 422),
+                    'message'  => Request::getShovelError('message', 'Something went wrong!'),
+                    'code'     => Request::getShovelError('code', 422),
                   ]
-                ], Request::error('code', 422));
+                ], Request::getShovelError('code', 422));
             }
 
             $objectData = [
