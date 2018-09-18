@@ -2,10 +2,10 @@
 
 namespace Shovel\Tests\Unit;
 
-use Shovel\Tests\TestCase;
+use Illuminate\Http\Response as ResponseClass;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Http\Response as ResponseClass;
+use Shovel\Tests\TestCase;
 
 class ContentTest extends TestCase
 {
@@ -76,7 +76,7 @@ class ContentTest extends TestCase
     public function test_custom_payload()
     {
         $result = Response::shovel([
-          'custom' => 'payload'
+          'custom' => 'payload',
         ], 201);
 
         $this->assertTrue($result instanceof ResponseClass);
