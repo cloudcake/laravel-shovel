@@ -17,7 +17,7 @@
 
 # Laravel Shovel
 
-**Laravel Shovel** is a light weight package containing simple injectable model traits with configurable attributes to perform powerful and flexible queries of your models dynamically from static HTTP routes.
+**Laravel Shovel** is a minimalist package providing Laravel response macros to assist in rapid API development by transforming models, resources, collections, paginated objects and errors into a concise API response format.
 
 Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
