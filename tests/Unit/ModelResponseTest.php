@@ -2,9 +2,9 @@
 
 namespace Shovel\Tests\Unit;
 
-use Shovel\Tests\TestCase;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Response as ResponseClass;
+use Illuminate\Support\Facades\Response;
+use Shovel\Tests\TestCase;
 
 class ModelResponseTest extends TestCase
 {

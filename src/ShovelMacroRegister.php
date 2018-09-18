@@ -2,14 +2,12 @@
 
 namespace Shovel;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\MessageBag;
 
 class ShovelMacroRegister
 {
-    const STATUS_CODES = array(
+    const STATUS_CODES = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing', // WebDAV; RFC 2518
@@ -87,7 +85,7 @@ class ShovelMacroRegister
         511 => 'Network Authentication Required', // RFC 6585
         598 => 'Network read timeout error', // Unknown
         599 => 'Network connect timeout error', // Unknown
-    );
+    ];
 
     public function __construct()
     {
@@ -106,7 +104,7 @@ class ShovelMacroRegister
         Request::macro('shovelError', function ($code = 422, $message = null) {
             request()->shovelError = [
               'message' => $message ?? ShovelMacroRegister::STATUS_CODES[$code],
-              'code' => $code
+              'code'    => $code,
             ];
 
             return request()->shovelError;
@@ -129,7 +127,7 @@ class ShovelMacroRegister
                     'status'   => 'error',
                     'message'  => Request::getShovelError('message', 'Something went wrong!'),
                     'code'     => Request::getShovelError('code', 422),
-                  ]
+                  ],
                 ], Request::getShovelError('code', 422));
             }
 
@@ -138,7 +136,7 @@ class ShovelMacroRegister
                 'status'   => in_array((int) substr($statusCode, 0, 1), [2, 3]) ? 'success' : 'error',
                 'message'  => $overrideMessage ? $object : ShovelMacroRegister::STATUS_CODES[$statusCode],
                 'code'     => $statusCode,
-              ]
+              ],
             ];
 
             if (is_null($object) || $objectData['meta']['status'] == 'error') {
