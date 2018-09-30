@@ -101,7 +101,7 @@ class ShovelMacroRegister
 
     private function registerRequestSetErrorMacro()
     {
-        Request::macro('shovelError', function ($code = 422, $message = null) {
+        Request::macro('shovelError', function ($message = null, $code = 422) {
             request()->shovelError = [
               'message' => $message ?? ShovelMacroRegister::STATUS_CODES[$code],
               'code'    => $code,
