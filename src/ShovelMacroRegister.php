@@ -143,7 +143,7 @@ class ShovelMacroRegister
                 return Response::make($objectData, $statusCode);
             }
 
-            if (method_exists($object, 'currentPage')) {
+            if (($object instanceof \Illuminate\Http\Resources\Json\ResourceCollection && method_exists($object->resource, 'currentPage')) || method_exists($object, 'currentPage')) {
                 $objectData['meta']['pagination'] = [
                     'records'  => $object->total(),
                     'page'     => $object->currentPage(),
