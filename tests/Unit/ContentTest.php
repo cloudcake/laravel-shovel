@@ -53,7 +53,7 @@ class ContentTest extends TestCase
 
     public function test_custom_error()
     {
-        Request::shovelError(404, 'Donno where that is');
+        Request::shovelError('Donno where that is', 404);
 
         $result = Response::shovel();
 
