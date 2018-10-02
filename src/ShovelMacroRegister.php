@@ -97,6 +97,7 @@ class ShovelMacroRegister
         $this->registerRequestSetErrorMacro();
         $this->registerRequestErrorMacro();
         $this->registerResponseShovelMacro();
+        $this->registerResponseShovelExtraMacro();
     }
 
     private function registerRequestSetErrorMacro()
@@ -153,6 +154,10 @@ class ShovelMacroRegister
                 $object = collect($object->items())->toArray();
             }
 
+            if (($extras = request()->shovelMetaExtras)) {
+                $objectData['meta'] = array_merge($objectData['meta'], $extras);
+            }
+
             if (method_exists($object, 'toArray')) {
                 $objectData['data'] = $object->toArray(request());
             } elseif (is_object($object)) {
@@ -162,6 +167,16 @@ class ShovelMacroRegister
             }
 
             return Response::make($objectData, $statusCode);
+        });
+    }
+
+    private function registerResponseShovelExtraMacro()
+    {
+        Request::macro('shovelMeta', function ($key, $array = []) {
+            if (!is_array(request()->shovelMetaExtras)) {
+                request()->shovelMetaExtras = [];
+            }
+            request()->shovelMetaExtras[$key] = $array;
         });
     }
 }
