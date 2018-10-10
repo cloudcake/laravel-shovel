@@ -10,7 +10,7 @@
 <a href="https://travis-ci.org/stephenlake/laravel-shovel"><img src="https://img.shields.io/travis/stephenlake/laravel-shovel/master.svg?style=flat-square" alt="Build Status"></a>
 <a href="https://github.styleci.io/repos/149203552"><img src="https://github.styleci.io/repos/148940371/shield?branch=master&style=flat-square" alt="StyleCI"></a>
 <a href="https://github.com/stephenlake/laravel-shovel"><img src="https://img.shields.io/github/release/stephenlake/laravel-shovel.svg?style=flat-square" alt="Release"></a>
-<a href="https://github.com/stephenlake/laravel-shovel/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="License"></a>
+<a href="https://github.com/stephenlake/laravel-shovel/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
 </p>
 
 <br><br>
