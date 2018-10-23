@@ -109,11 +109,17 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      *
      * @return \Illuminate\Http\Response
      */
-    public function withError($error, $status_code = 422)
+    public function withError($error, $status_code = false)
     {
-        $this->meta['message'] = $error;
         $this->meta['status'] = 'error';
-        $this->meta['code'] = $status_code;
+
+        if (!$status_code && is_numeric($error)) {
+            $this->meta['code'] = $error;
+            $this->meta['message'] = self::STATUS_CODES[$error] ?? 'Invalid Status Code';
+        } else {
+            $this->meta['message'] = $error;
+            $this->meta['code'] = $status_code ? $status_code : 422;
+        }
 
         return $this->registerResponse();
     }
