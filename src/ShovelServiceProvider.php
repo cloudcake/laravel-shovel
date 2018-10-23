@@ -16,7 +16,7 @@ class ShovelServiceProvider extends ServiceProvider
     protected $defer = true;
 
     /**
-     * Boot up Macros.
+     * Boot up Shovel.
      *
      * @return void
      */
@@ -26,6 +26,11 @@ class ShovelServiceProvider extends ServiceProvider
         $this->registerResponseMacros();
     }
 
+    /**
+     * Register payload singleton.
+     *
+     * @return void
+     */
     private function registerShovelSingleton()
     {
         $this->app->singleton('shovel', function ($app) {
@@ -33,6 +38,11 @@ class ShovelServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Register the macros.
+     *
+     * @return void
+     */
     private function registerResponseMacros()
     {
         Response::macro('withMeta', function ($keys, $data) {

@@ -7,21 +7,52 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Shovel extends ArrayObject implements HttpStatusCodes
 {
+    /**
+     * Meta data.
+     *
+     * @var array
+     */
     public $meta = [];
+
+    /**
+     * Object data.
+     *
+     * @var mixed
+     */
     public $data = null;
 
+    /**
+     * Response instance
+     *
+     * @var \Illuminate\Http\Response
+     */
     private $responseInstance;
 
+    /**
+     * Constructor.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->setFlags(ArrayObject::STD_PROP_LIST|ArrayObject::ARRAY_AS_PROPS);
     }
 
+    /**
+     * Get the response instance.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function responseInstance()
     {
         return $this->responseInstance;
     }
 
+    /**
+     * Set and parse the response data.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function provideData($data, $status_code = null)
     {
         $this->meta['code'] = $status_code;
@@ -58,6 +89,11 @@ class Shovel extends ArrayObject implements HttpStatusCodes
         $this->registerResponse();
     }
 
+    /**
+     * Apply extra meta data.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function withMeta($key, $data)
     {
         $dotNotation = new \Adbar\Dot($this->meta);
@@ -68,6 +104,11 @@ class Shovel extends ArrayObject implements HttpStatusCodes
         return $this->registerResponse();
     }
 
+    /**
+     * Apply custom error data.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function withError($error, $status_code = 422)
     {
         $this->meta['message'] = $error;
@@ -77,6 +118,11 @@ class Shovel extends ArrayObject implements HttpStatusCodes
         return $this->registerResponse();
     }
 
+    /**
+     * Apply custom meta message.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function withMessage($message = '')
     {
         $this->meta['message'] = $message;
@@ -84,6 +130,11 @@ class Shovel extends ArrayObject implements HttpStatusCodes
         return $this->registerResponse();
     }
 
+    /**
+     * Returns true if data object is paginated.
+     *
+     * @return \Illuminate\Http\Response
+     */
     private function isPaginatedResource()
     {
         return ($this->data instanceof ResourceCollection &&
@@ -91,11 +142,21 @@ class Shovel extends ArrayObject implements HttpStatusCodes
                 method_exists($this->data, 'currentPage');
     }
 
+    /**
+     * Returns true if the status code is in the successful range.
+     *
+     * @return bool
+     */
     private function isSuccessfulResponse()
     {
         return in_array((int) substr($this->meta['code'], 0, 1), [2, 3]);
     }
 
+    /**
+     * Apply data updates.
+     *
+     * @return \Illuminate\Http\Response
+     */
     private function registerResponse()
     {
         if (!$this->responseInstance) {
