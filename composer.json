@@ -19,7 +19,10 @@
   "autoload": {
     "psr-4": {
       "Shovel\\": "src/"
-    }
+    },
+    "files": [
+      "src/Helpers/Shovel.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
