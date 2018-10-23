@@ -27,8 +27,6 @@ Install the package via composer.
 
     composer require stephenlake/laravel-shovel
 
-See documentation for usage.
-
 #### See [documentation](https://stephenlake.github.io/laravel-shovel/) for usage.
 
 ## License
