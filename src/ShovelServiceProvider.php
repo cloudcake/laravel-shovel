@@ -2,9 +2,9 @@
 
 namespace Shovel;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Response;
 use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\ServiceProvider;
 
 class ShovelServiceProvider extends ServiceProvider
 {
