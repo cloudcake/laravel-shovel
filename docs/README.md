@@ -27,6 +27,7 @@ That's it. See the usage section for examples.
 Shovel will automatically cast paginated objects, models, collections and resource object to their appropriate formats so you don't need to.
 
 ## Basic
+**NOTE:** The response code returned in the body payload will be set as the actual HTTP header response code as well.
 
 ### Regular Responses
 
