@@ -81,7 +81,7 @@ Will result in the following structured result:
 
 ### Errors
 
-#### Settings error messages
+#### Setting error messages
 You can easily provide error messages by appending the `->withError()` method to the shovel instance:
 
 ```php
@@ -118,7 +118,7 @@ And will result in the following structured result:
 }
 ```
 
-Of course you may also provide a custom error message without providing a error code which will fall back to the default '422':
+Of course you may also provide a custom error message without providing an error code which will fall back to the default '422':
 
 ```php
 response()->shovel()->withError('Some error was encountered');
