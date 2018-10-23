@@ -5,7 +5,6 @@ namespace Shovel\Tests;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Shovel\Tests\Models\Sample;
 
 abstract class TestCase extends BaseTestCase
 {

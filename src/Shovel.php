@@ -22,7 +22,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
     public $data = null;
 
     /**
-     * Response instance
+     * Response instance.
      *
      * @var \Illuminate\Http\Response
      */
@@ -35,7 +35,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      */
     public function __construct()
     {
-        $this->setFlags(ArrayObject::STD_PROP_LIST|ArrayObject::ARRAY_AS_PROPS);
+        $this->setFlags(ArrayObject::STD_PROP_LIST | ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**

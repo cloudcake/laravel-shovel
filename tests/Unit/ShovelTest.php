@@ -2,13 +2,12 @@
 
 namespace Shovel\Tests\Unit;
 
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Shovel\Tests\TestCase;
-use Shovel\Tests\Resources\SampleResource;
 use Shovel\Tests\Models\Sample;
+use Shovel\Tests\Resources\SampleResource;
+use Shovel\Tests\TestCase;
 
-class ContentTest extends TestCase
+class ShovelTest extends TestCase
 {
     public function testEmptyResponse()
     {
@@ -43,7 +42,7 @@ class ContentTest extends TestCase
     {
         $errors = [
           'This is the first error',
-          'This is the second error'
+          'This is the second error',
         ];
 
         $responseArray = json_decode(Response::shovel()->withError($errors)->content(), true);
@@ -57,7 +56,7 @@ class ContentTest extends TestCase
     {
         $payload = [
           'name' => 'Foo',
-          'type' => 'Bar'
+          'type' => 'Bar',
         ];
 
         $responseArray = json_decode(Response::shovel($payload)->content(), true);
@@ -80,11 +79,11 @@ class ContentTest extends TestCase
         $payload = [
           [
             'name' => 'Foo',
-            'type' => 'Bar'
+            'type' => 'Bar',
           ],
           [
             'name' => 'John',
-            'type' => 'Doe'
+            'type' => 'Doe',
           ],
         ];
 
@@ -109,7 +108,7 @@ class ContentTest extends TestCase
     {
         $payload = [
             'name' => 'Foo',
-            'type' => 'Bar'
+            'type' => 'Bar',
         ];
 
         $responseArray = json_decode(Response::shovel(new SampleResource($payload))->content(), true);
@@ -132,11 +131,11 @@ class ContentTest extends TestCase
         $payload = collect([
           [
               'name' => 'Foo',
-              'type' => 'Bar'
+              'type' => 'Bar',
           ],
           [
             'name' => 'John',
-            'type' => 'Doe'
+            'type' => 'Doe',
           ],
         ]);
 
@@ -214,7 +213,7 @@ class ContentTest extends TestCase
     {
         $payload = [
             'name' => 'Foo',
-            'type' => 'Bar'
+            'type' => 'Bar',
         ];
 
         $metaMessage = 'I am a banana.';
