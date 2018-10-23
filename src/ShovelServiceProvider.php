@@ -13,7 +13,7 @@ class ShovelServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * Boot up Shovel.
