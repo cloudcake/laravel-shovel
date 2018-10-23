@@ -14,7 +14,6 @@ abstract class TestCase extends BaseTestCase
         parent::setup();
 
         $this->app->setBasePath(__DIR__.'/../');
-        $this->createModels(150);
     }
 
     protected function getPackageProviders($app)
@@ -40,15 +39,5 @@ abstract class TestCase extends BaseTestCase
             $table->string('description');
             $table->timestamps();
         });
-    }
-
-    public function createModels($count)
-    {
-        for ($i = 0; $i < $count; $i++) {
-            Sample::create([
-            'name'        => "Shovel Model #{$i}",
-            'description' => 'Shovel Test Model',
-          ]);
-        }
     }
 }
