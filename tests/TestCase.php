@@ -2,7 +2,6 @@
 
 namespace Shovel\Tests;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
