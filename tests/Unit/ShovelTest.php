@@ -11,7 +11,7 @@ class ShovelTest extends TestCase
 {
     public function testEmptyResponse()
     {
-        $responseArray = json_decode(shovel()->content(), true);
+        $responseArray = json_decode(shovel([])->content(), true);
 
         $this->assertArrayNotHasKey('data', $responseArray);
         $this->assertArrayHasKey('meta', $responseArray);
@@ -26,7 +26,7 @@ class ShovelTest extends TestCase
 
     public function testSingleError()
     {
-        $responseArray = json_decode(shovel()->withError('This is an error')->content(), true);
+        $responseArray = json_decode(shovel([])->withError('This is an error')->content(), true);
 
         $this->assertArrayNotHasKey('data', $responseArray);
         $this->assertArrayHasKey('status', $responseArray['meta']);
@@ -45,7 +45,7 @@ class ShovelTest extends TestCase
           'This is the second error',
         ];
 
-        $responseArray = json_decode(shovel()->withError($errors)->content(), true);
+        $responseArray = json_decode(shovel([])->withError($errors)->content(), true);
 
         $this->assertTrue(is_array($responseArray['meta']['message']));
         $this->assertTrue($responseArray['meta']['message'][0] == $errors[0]);
