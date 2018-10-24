@@ -80,7 +80,7 @@ Will result in the following structured result:
 }
 ```
 
-## Copy/Paste Example
+### Copy/Paste Example
 
 routes/web.php
 ```php
@@ -134,7 +134,7 @@ Route::get('/added-meta', function() {
 });
 
 Route::get('/added-messages', function() {
-    return shovel(['Foo' => 'Bar'])->withMessages([
+    return shovel(['Foo' => 'Bar'])->withMessage([
         'You are a message',
         'I am a message'
     ]);
@@ -202,7 +202,7 @@ And will result in the following structured result:
 There may be situations where the single error message response does not suit your needs, you may define multiple message lines:
 
 ```php
-response()->shovel()->withError(422)->withMessages([
+response()->shovel()->withError(422)->withMessage([
   'This is my first error',
   'This is my second error'
 ]);
