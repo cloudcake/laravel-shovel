@@ -157,11 +157,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      */
     private function registerResponse()
     {
-        if (!$this->responseInstance) {
-            $this->responseInstance = response($this, $this->meta['code']);
-        }
-
-        $this->responseInstance->setContent($this);
+        $this->responseInstance = response($this, $this->meta['code']);
 
         return $this->responseInstance;
     }
