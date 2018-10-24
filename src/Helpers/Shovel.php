@@ -1,6 +1,13 @@
 <?php
 
-function shovel($data = null, $code = 200)
+function shovel($data = null, $status_code = 200)
 {
-    return response()->shovel($data, $code);
+    if ($data) {
+        $shovel = app('shovel');
+        $shovel->provideData($data, $status_code);
+
+        return $shovel->responseInstance();
+    }
+
+    return app('shovel');
 }
