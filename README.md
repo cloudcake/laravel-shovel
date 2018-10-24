@@ -17,7 +17,7 @@
 
 # Laravel Shovel
 
-**Laravel Shovel** is a minimalist package providing Laravel response macros to assist in rapid API development by transforming models, resources, collections, paginated objects and errors into a concise API response format.
+**Laravel Shovel** is a minimalist package providing Laravel response macros to assist in rapid API development by transforming models, resources, collections, paginated objects and errors into a concise API response format. DRY.
 
 Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
