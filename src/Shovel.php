@@ -53,12 +53,13 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      *
      * @return \Illuminate\Http\Response
      */
-    public function provideData($data, $status_code = null)
+    public function provideData($data, $status_code = 200)
     {
         $this->meta['code'] = $status_code;
 
         if ($this->isSuccessfulResponse()) {
             $this->meta['status'] = 'success';
+            $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
 
             if (is_null($data)) {
                 unset($this->data);
@@ -82,11 +83,10 @@ class Shovel extends ArrayObject implements HttpStatusCodes
             }
         } else {
             $this->meta['status'] = 'error';
+            $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$status_code] ?? 'Invalid Status Code');
         }
 
-        $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
-
-        $this->registerResponse();
+        return $this->registerResponse();
     }
 
     /**
@@ -109,17 +109,9 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      *
      * @return \Illuminate\Http\Response
      */
-    public function withError($error, $status_code = false)
+    public function withError($error, $status_code = 422)
     {
-        $this->meta['status'] = 'error';
-
-        if (!$status_code && is_numeric($error)) {
-            $this->meta['code'] = $error;
-            $this->meta['message'] = self::STATUS_CODES[$error] ?? 'Invalid Status Code';
-        } else {
-            $this->meta['message'] = $error;
-            $this->meta['code'] = $status_code ? $status_code : 422;
-        }
+        $this->provideData($error, $status_code);
 
         return $this->registerResponse();
     }
