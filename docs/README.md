@@ -80,6 +80,67 @@ Will result in the following structured result:
 }
 ```
 
+## Copy/Paste Example
+
+routes/web.php
+```php
+use Illuminate\Http\Resources\Json\Resource;
+use App\User;
+
+Route::get('/users', function(){
+    return shovel(User::get());
+});
+
+Route::get('/users/first', function(){
+    return shovel(User::first());
+});
+
+Route::get('/users/paginated', function(){
+    return shovel(User::paginate());
+});
+
+Route::get('/users/resource', function(){
+    return shovel(new Resource(User::first()));
+});
+
+Route::get('/users/resources', function(){
+    return shovel(Resource::collection(User::get()));
+});
+
+Route::get('/users/resources/paginated', function(){
+    return shovel(Resource::collection(User::paginate()));
+});
+
+Route::get('/error/default-code', function() {
+
+    $message = request('message', 'This is an example error message');
+
+    return shovel()->withError($message);
+});
+
+Route::get('/error/with-custom-code', function() {
+
+    $message = request('message', 'This is an example error message');
+    $code    = request('code', 422);
+
+    return shovel()->withError($message, $code);
+});
+
+Route::get('/added-meta', function() {
+    return shovel(['Foo' => 'Bar'])->withMeta('some.awesome.key', [
+        'this' => 'is',
+        'new'  => 'meta'
+    ]);
+});
+
+Route::get('/added-messages', function() {
+    return shovel(['Foo' => 'Bar'])->withMessages([
+        'You are a message',
+        'I am a message'
+    ]);
+});
+```
+
 ### Errors
 
 #### Setting error messages
