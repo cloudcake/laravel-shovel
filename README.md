@@ -21,6 +21,28 @@
 
 Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
+## What?
+Transform `Post::paginate();` into 
+```
+{
+  "meta": {
+    "status": "success",
+    "message": "OK",
+    "code": 200,
+    "pagination": {
+      "records": 42312,
+      "page": 1,
+      "pages": 2821,
+      "limit": 15
+    }
+  },
+  "data": [{...},{...},{...}]
+}
+```
+By using `shovel(Post::paginate());` or `shovel(Resource::collection(Post::paginate())`. 
+
+See [documentation](https://stephenlake.github.io/laravel-shovel/) for more features and a quick copy & paste sample.
+
 ## Getting Started
 
 Install the package via composer.
