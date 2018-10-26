@@ -21,7 +21,12 @@
 
 Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
-## What?
+## Getting Started
+
+Install the package via composer.
+
+    composer require stephenlake/laravel-shovel
+    
 Transform `Post::paginate();` into 
 ```
 {
@@ -40,14 +45,6 @@ Transform `Post::paginate();` into
 }
 ```
 By using `shovel(Post::paginate());` or `shovel(Resource::collection(Post::paginate())`. 
-
-See [documentation](https://stephenlake.github.io/laravel-shovel/) for more features and a quick copy & paste sample.
-
-## Getting Started
-
-Install the package via composer.
-
-    composer require stephenlake/laravel-shovel
 
 #### See [documentation](https://stephenlake.github.io/laravel-shovel/) for usage.
 
