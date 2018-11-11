@@ -24,6 +24,7 @@ class ShovelServiceProvider extends ServiceProvider
     {
         $this->registerShovelSingleton();
         $this->registerResponseMacros();
+        $this->registerConfiguration();
     }
 
     /**
@@ -67,5 +68,17 @@ class ShovelServiceProvider extends ServiceProvider
 
             return $shovel->responseInstance();
         });
+    }
+
+    /**
+     * Register shovel configuration.
+     *
+     * @return void
+     */
+    private function registerConfiguration()
+    {
+        $this->publishes([
+            __DIR__.'/Config/shovel.php' => config_path('shovel.php'),
+        ], 'config');
     }
 }
