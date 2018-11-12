@@ -176,6 +176,8 @@ class ShovelTest extends TestCase
         $this->assertArrayHasKey('status', $responseArray['meta']);
         $this->assertArrayHasKey('message', $responseArray['meta']);
         $this->assertArrayHasKey('code', $responseArray['meta']);
+        $this->assertArrayHasKey('pagination', $responseArray['meta']);
+        $this->assertArrayHasKey('links', $responseArray['meta']['pagination']);
 
         $this->assertTrue($responseArray['meta']['pagination']['pages'] > 0);
         $this->assertTrue($responseArray['meta']['pagination']['page'] == 1);
