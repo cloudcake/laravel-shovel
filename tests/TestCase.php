@@ -30,6 +30,8 @@ abstract class TestCase extends BaseTestCase
             'prefix'   => '',
         ]);
 
+        $app['config']->set('shovel.includePaginationLinks', true);
+
         Schema::dropIfExists('samples');
         Schema::create('samples', function ($table) {
             $table->increments('id');
