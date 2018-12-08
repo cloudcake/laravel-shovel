@@ -71,7 +71,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
                       'records'  => $data->total(),
                       'page'     => $data->currentPage(),
                       'pages'    => $data->lastPage(),
-                      'limit'    => $data->perPage(),
+                      'limit'    => intval($data->perPage()),
                     ];
 
                     if (config('shovel.includePaginationLinks', false)) {
