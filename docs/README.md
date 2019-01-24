@@ -20,11 +20,11 @@ This package makes use of Laravel's auto-discovery of service providers. If you 
 
 Add `Shovel\ShovelServiceProvider::class` to the `providers` array in `config/app.php`.
 
-That's it. See the usage section for examples.
-
 ## Publish configuration
 
 `php artisan vendor:publish --provider="Shovel\ShovelServiceProvider" --tag="config"`
+
+That's it. See the usage section for examples.
 
 # Usage
 
