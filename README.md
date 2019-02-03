@@ -1,5 +1,5 @@
 <h6 align="center">
-    <img src="https://raw.githubusercontent.com/stephenlake/laravel-shovel/master/docs/assets/laravel-shovel-banner.png"/>
+    <img src="https://raw.githubusercontent.com/stephenlake/laravel-shovel/master/docs/assets/laravel-shovel-banner.png" width="420"/>
 </h6>
 
 <h6 align="center">
