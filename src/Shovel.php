@@ -58,40 +58,40 @@ class Shovel extends ArrayObject implements HttpStatusCodes
         $this->meta['code'] = $status_code;
 
         if ($this->isSuccessfulResponse()) {
-            $this->meta['status'] = 'success';
+            $this->meta['status']  = 'success';
             $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
 
-            if ($this->data && is_null($data)) {
-                unset($this->data);
-            } else {
-                $this->data = $data;
+            $this->data = $data;
 
-                if ($this->isPaginatedResource()) {
-                    $this->meta['pagination'] = [
-                      'records'  => $data->total(),
-                      'page'     => $data->currentPage(),
-                      'pages'    => $data->lastPage(),
-                      'limit'    => intval($data->perPage()),
+            if ($this->isPaginatedResource()) {
+                $this->meta['pagination'] = [
+                  'records'  => $data->total(),
+                  'page'     => $data->currentPage(),
+                  'pages'    => $data->lastPage(),
+                  'limit'    => intval($data->perPage()),
+                ];
+
+                if (config('shovel.includePaginationLinks', false)) {
+                    $this->meta['pagination']['links'] = [
+                      'current'  => $data->url($data->currentPage()),
+                      'previous' => $data->previousPageUrl(),
+                      'next'     => $data->nextPageUrl(),
+                      'last'     => $data->url($data->lastPage()),
                     ];
-
-                    if (config('shovel.includePaginationLinks', false)) {
-                        $this->meta['pagination']['links'] = [
-                          'current'  => $data->url($data->currentPage()),
-                          'previous' => $data->previousPageUrl(),
-                          'next'     => $data->nextPageUrl(),
-                          'last'     => $data->url($data->lastPage()),
-                        ];
-                    }
-
-                    $this->data = $this->data->items();
                 }
 
-                if (method_exists($this->data, 'toArray')) {
-                    $this->data = $this->data->toArray(request());
-                }
+                $this->data = $this->data->items();
+            }
+
+            if (method_exists($this->data, 'toArray')) {
+                $this->data = $this->data->toArray(request());
+            }
+
+            if (is_null($this->data)) {
+                unset($this->data);
             }
         } else {
-            $this->meta['status'] = 'error';
+            $this->meta['status']  = 'error';
             $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$status_code] ?? 'Invalid Status Code');
         }
 
@@ -152,7 +152,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
     /**
      * Returns true if the status code is in the successful range.
      *
-     * @return bool
+     * @return boolean
      */
     private function isSuccessfulResponse()
     {
