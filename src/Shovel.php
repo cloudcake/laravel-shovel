@@ -61,7 +61,7 @@ class Shovel extends ArrayObject implements HttpStatusCodes
             $this->meta['status'] = 'success';
             $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
 
-            if (is_null($data)) {
+            if ($this->data && is_null($data)) {
                 unset($this->data);
             } else {
                 $this->data = $data;
