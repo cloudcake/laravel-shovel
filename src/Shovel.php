@@ -2,10 +2,9 @@
 
 namespace Shovel;
 
-use ArrayObject;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class Shovel extends ArrayObject implements HttpStatusCodes
+class Shovel implements HttpStatusCodes
 {
     /**
      * Meta data.
@@ -26,26 +25,16 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      *
      * @var \Illuminate\Http\Response
      */
-    private $responseInstance;
-
-    /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->setFlags(ArrayObject::STD_PROP_LIST | ArrayObject::ARRAY_AS_PROPS);
-    }
+    private $response;
 
     /**
      * Get the response instance.
      *
      * @return \Illuminate\Http\Response
      */
-    public function responseInstance()
+    public function getResponse()
     {
-        return $this->responseInstance;
+        return $this->response;
     }
 
     /**
@@ -57,42 +46,40 @@ class Shovel extends ArrayObject implements HttpStatusCodes
     {
         $this->meta['code'] = $status_code;
 
-        if ($this->isSuccessfulResponse()) {
-            $this->meta['status']  = 'success';
-            $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
-
-            $this->data = $data;
-
-            if ($this->isPaginatedResource()) {
-                $this->meta['pagination'] = [
-                  'records'  => $data->total(),
-                  'page'     => $data->currentPage(),
-                  'pages'    => $data->lastPage(),
-                  'limit'    => intval($data->perPage()),
-                ];
-
-                if (config('shovel.includePaginationLinks', false)) {
-                    $this->meta['pagination']['links'] = [
-                      'current'  => $data->url($data->currentPage()),
-                      'previous' => $data->previousPageUrl(),
-                      'next'     => $data->nextPageUrl(),
-                      'last'     => $data->url($data->lastPage()),
-                    ];
-                }
-
-                $this->data = $this->data->items();
-            }
-
-            if (method_exists($this->data, 'toArray')) {
-                $this->data = $this->data->toArray(request());
-            }
-
-            if (is_null($this->data)) {
-                unset($this->data);
-            }
-        } else {
+        if (!$this->isSuccessfulResponse()) {
             $this->meta['status']  = 'error';
             $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$status_code] ?? 'Invalid Status Code');
+
+            return $this->registerResponse();
+        }
+
+        $this->meta['status']  = 'success';
+        $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
+
+        $this->data = $data;
+
+        if ($this->isPaginatedResource()) {
+            $this->meta['pagination'] = [
+              'records'  => $data->total(),
+              'page'     => $data->currentPage(),
+              'pages'    => $data->lastPage(),
+              'limit'    => intval($data->perPage()),
+            ];
+
+            if (config('shovel.includePaginationLinks', false)) {
+                $this->meta['pagination']['links'] = [
+                  'current'  => $data->url($data->currentPage()),
+                  'previous' => $data->previousPageUrl(),
+                  'next'     => $data->nextPageUrl(),
+                  'last'     => $data->url($data->lastPage()),
+                ];
+            }
+
+            $this->data = $this->data->items();
+        }
+
+        if (method_exists($this->data, 'toArray')) {
+            $this->data = $this->data->toArray(request());
         }
 
         return $this->registerResponse();
@@ -166,8 +153,14 @@ class Shovel extends ArrayObject implements HttpStatusCodes
      */
     private function registerResponse()
     {
-        $this->responseInstance = response($this, $this->meta['code']);
+        if ($this->data) {
+            $response = ['meta' => $this->meta, 'data' => $this->data];
+        } else {
+            $response = ['meta' => $this->meta];
+        }
 
-        return $this->responseInstance;
+        $this->response = response($response, $this->meta['code']);
+
+        return $this->response;
     }
 }

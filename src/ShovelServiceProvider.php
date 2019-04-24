@@ -66,7 +66,7 @@ class ShovelServiceProvider extends ServiceProvider
             $shovel = app('shovel');
             $shovel->provideData($data, $status_code);
 
-            return $shovel->responseInstance();
+            return $shovel->getResponse();
         });
     }
 
