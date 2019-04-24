@@ -1,11 +1,3 @@
-<h6 align="center">
-    <img src="https://raw.githubusercontent.com/stephenlake/laravel-shovel/master/docs/assets/laravel-shovel-banner.png"/>
-</h6>
-
-<h6 align="center">
-    A minimal package for shovelling data from an API to clients, for Laravel.
-</h6>
-
 # Getting Started
 
 ## Install the package via composer
