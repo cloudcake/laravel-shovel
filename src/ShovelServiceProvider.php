@@ -54,11 +54,11 @@ class ShovelServiceProvider extends ServiceProvider
             return app('shovel')->withMessage($message);
         });
 
-        Response::macro('withError', function ($message = '', $code = 422) {
+        Response::macro('withError', function ($message = null, $code = 422) {
             return app('shovel')->withError($message, $code);
         });
 
-        Response::macro('withErrors', function ($message = '', $code = 422) {
+        Response::macro('withErrors', function ($message = null, $code = 422) {
             return app('shovel')->withError($message, $code);
         });
 
