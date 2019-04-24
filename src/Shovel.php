@@ -42,19 +42,19 @@ class Shovel implements HttpStatusCodes
      *
      * @return \Illuminate\Http\Response
      */
-    public function provideData($data, $status_code = 200)
+    public function provideData($data, $code)
     {
-        $this->meta['code'] = $status_code;
+        $this->meta['code'] = $code ?? $data;
 
         if (!$this->isSuccessfulResponse()) {
             $this->meta['status']  = 'error';
-            $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$status_code] ?? 'Invalid Status Code');
+            $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$code] ?? 'Invalid Status Code');
 
             return $this->registerResponse();
         }
 
         $this->meta['status']  = 'success';
-        $this->meta['message'] = self::STATUS_CODES[$status_code] ?? 'Invalid Status Code';
+        $this->meta['message'] = self::STATUS_CODES[$code] ?? 'Invalid Status Code';
 
         $this->data = $data;
 
@@ -105,9 +105,9 @@ class Shovel implements HttpStatusCodes
      *
      * @return \Illuminate\Http\Response
      */
-    public function withError($error, $status_code = 422)
+    public function withError($error, $code = 422)
     {
-        $this->provideData($error, $status_code);
+        $this->provideData($error, $code);
 
         return $this->registerResponse();
     }
