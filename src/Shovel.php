@@ -47,13 +47,13 @@ class Shovel implements HttpStatusCodes
         $this->meta['code'] = $code ?? $data;
 
         if (!$this->isSuccessfulResponse()) {
-            $this->meta['status']  = 'error';
+            $this->meta['status'] = 'error';
             $this->meta['message'] = $data ? $data : (self::STATUS_CODES[$code] ?? 'Invalid Status Code');
 
             return $this->registerResponse();
         }
 
-        $this->meta['status']  = 'success';
+        $this->meta['status'] = 'success';
         $this->meta['message'] = self::STATUS_CODES[$code] ?? 'Invalid Status Code';
 
         $this->data = $data;
@@ -139,7 +139,7 @@ class Shovel implements HttpStatusCodes
     /**
      * Returns true if the status code is in the successful range.
      *
-     * @return boolean
+     * @return bool
      */
     private function isSuccessfulResponse()
     {
