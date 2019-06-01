@@ -13,7 +13,7 @@ class ShovelTest extends TestCase
     {
         $this->app['config']->set('shovel.omitEmptyObject', true);
 
-        $responseArray = json_decode(shovel([])->content(), true);
+        $responseArray = json_decode(shovel()->content(), true);
 
         $this->assertArrayNotHasKey('data', $responseArray);
         $this->assertArrayHasKey('meta', $responseArray);
