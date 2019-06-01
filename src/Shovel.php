@@ -179,8 +179,11 @@ class Shovel implements HttpStatusCodes
             'data' => $this->data,
         ];
 
-        if (empty($this->data) && ($this->config->omitEmptyObject || $this->config->omitEmptyArray)) {
-            unset($response['data']);
+        if (empty($this->data)) {
+            if ($this->config->omitEmptyArray && is_array($this->data) ||
+                $this->config->omitEmptyObject && !is_array($this->data)) {
+                unset($response['data']);
+            }
         }
 
         $this->response = response($response, $this->meta['code']);
