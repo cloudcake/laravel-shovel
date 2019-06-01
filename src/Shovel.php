@@ -28,6 +28,27 @@ class Shovel implements HttpStatusCodes
     private $response;
 
     /**
+     * Config repository instance.
+     *
+     * @var \Illuminate\Config\Repository
+     */
+    private $config;
+
+    /**
+     * Constructor.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->config = (object) config('shovel', [
+            'includePaginationLinks' => false,
+            'omitEmptyObject'        => false,
+            'omitEmptyArray'         => false,
+        ]);
+    }
+
+    /**
      * Get the response instance.
      *
      * @return \Illuminate\Http\Response
@@ -66,7 +87,7 @@ class Shovel implements HttpStatusCodes
               'limit'    => intval($data->perPage()),
             ];
 
-            if (config('shovel.includePaginationLinks', false)) {
+            if ($this->config->includePaginationLinks) {
                 $this->meta['pagination']['links'] = [
                   'current'  => $data->url($data->currentPage()),
                   'previous' => $data->previousPageUrl(),
@@ -153,10 +174,13 @@ class Shovel implements HttpStatusCodes
      */
     private function registerResponse()
     {
-        if ($this->data) {
-            $response = ['meta' => $this->meta, 'data' => $this->data];
-        } else {
-            $response = ['meta' => $this->meta];
+        $response = [
+            'meta' => $this->meta,
+            'data' => $this->data,
+        ];
+
+        if (empty($this->data) && ($this->config->omitEmptyObject || $this->config->omitEmptyArray)) {
+            unset($response['data']);
         }
 
         $this->response = response($response, $this->meta['code']);
