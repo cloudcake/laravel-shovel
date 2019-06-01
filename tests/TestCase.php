@@ -31,6 +31,8 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         $app['config']->set('shovel.includePaginationLinks', true);
+        $app['config']->set('shovel.omitEmptyObject', false);
+        $app['config']->set('shovel.omitEmptyArray', false);
 
         Schema::dropIfExists('samples');
         Schema::create('samples', function ($table) {

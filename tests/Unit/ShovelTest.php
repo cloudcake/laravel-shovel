@@ -9,11 +9,13 @@ use Shovel\Tests\TestCase;
 
 class ShovelTest extends TestCase
 {
-    public function testEmptyResponse()
+    public function testOmitObjectResponse()
     {
+        $this->app['config']->set('shovel.omitEmptyObject', true);
+
         $responseArray = json_decode(shovel([])->content(), true);
 
-        // $this->assertArrayNotHasKey('data', $responseArray);
+        $this->assertArrayNotHasKey('data', $responseArray);
         $this->assertArrayHasKey('meta', $responseArray);
         $this->assertArrayHasKey('status', $responseArray['meta']);
         $this->assertArrayHasKey('message', $responseArray['meta']);
@@ -22,6 +24,59 @@ class ShovelTest extends TestCase
         $this->assertTrue($responseArray['meta']['code'] == 200);
         $this->assertTrue($responseArray['meta']['status'] == 'success');
         $this->assertTrue($responseArray['meta']['message'] == 'OK');
+    }
+
+    public function testNotOmitObjectResponse()
+    {
+        $this->app['config']->set('shovel.omitEmptyObject', false);
+
+        $responseArray = json_decode(shovel()->content(), true);
+
+        $this->assertArrayHasKey('data', $responseArray);
+        $this->assertArrayHasKey('meta', $responseArray);
+        $this->assertArrayHasKey('status', $responseArray['meta']);
+        $this->assertArrayHasKey('message', $responseArray['meta']);
+        $this->assertArrayHasKey('code', $responseArray['meta']);
+
+        $this->assertTrue($responseArray['meta']['code'] == 200);
+        $this->assertTrue($responseArray['meta']['status'] == 'success');
+        $this->assertTrue($responseArray['meta']['message'] == 'OK');
+        $this->assertTrue(is_null($responseArray['data']));
+    }
+
+    public function testOmitArrayResponse()
+    {
+        $this->app['config']->set('shovel.omitEmptyArray', true);
+
+        $responseArray = json_decode(shovel([])->content(), true);
+
+        $this->assertArrayNotHasKey('data', $responseArray);
+        $this->assertArrayHasKey('meta', $responseArray);
+        $this->assertArrayHasKey('status', $responseArray['meta']);
+        $this->assertArrayHasKey('message', $responseArray['meta']);
+        $this->assertArrayHasKey('code', $responseArray['meta']);
+
+        $this->assertTrue($responseArray['meta']['code'] == 200);
+        $this->assertTrue($responseArray['meta']['status'] == 'success');
+        $this->assertTrue($responseArray['meta']['message'] == 'OK');
+    }
+
+    public function testNotOmitArrayResponse()
+    {
+        $this->app['config']->set('shovel.omitEmptyArray', false);
+
+        $responseArray = json_decode(shovel([])->content(), true);
+
+        $this->assertArrayHasKey('data', $responseArray);
+        $this->assertArrayHasKey('meta', $responseArray);
+        $this->assertArrayHasKey('status', $responseArray['meta']);
+        $this->assertArrayHasKey('message', $responseArray['meta']);
+        $this->assertArrayHasKey('code', $responseArray['meta']);
+
+        $this->assertTrue($responseArray['meta']['code'] == 200);
+        $this->assertTrue($responseArray['meta']['status'] == 'success');
+        $this->assertTrue($responseArray['meta']['message'] == 'OK');
+        $this->assertTrue(is_array($responseArray['data']));
     }
 
     public function testSingleError()
