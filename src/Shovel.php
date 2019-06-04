@@ -2,6 +2,7 @@
 
 namespace Shovel;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class Shovel implements HttpStatusCodes
@@ -113,10 +114,7 @@ class Shovel implements HttpStatusCodes
      */
     public function withMeta($key, $data)
     {
-        $dotNotation = new \Adbar\Dot($this->meta);
-        $dotNotation->set($key, $data);
-
-        $this->meta = $dotNotation->all();
+        Arr::set($this->meta, $key, $data);
 
         return $this->registerResponse();
     }

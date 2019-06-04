@@ -7,9 +7,6 @@
     "name": "Stephen Lake",
     "email": "stephen@closurecode.com"
   }],
-  "require": {
-    "adbario/php-dot-notation": "^2.1"
-  },
   "require-dev": {
     "phpunit/phpunit": "~7.0",
     "laravel/framework": "~5.5.0|~5.6.0|~5.7.0",
