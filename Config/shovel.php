@@ -34,4 +34,15 @@ return [
     |
     */
     'omitEmptyArray' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Omit data object on error
+    |--------------------------------------------------------------------------
+    |
+    | Enabling this option will omit the data field in responses where the
+    | meta code is not in the OK range (not 200-299).
+    |
+    */
+    'omitDataOnError' => false,
 ];
