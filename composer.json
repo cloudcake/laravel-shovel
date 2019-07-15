@@ -29,5 +29,8 @@
         "Shovel\\ShovelServiceProvider"
       ]
     }
+  },
+  "require": {
+    "stephenlake/php-commons": "^1.0"
   }
 }
