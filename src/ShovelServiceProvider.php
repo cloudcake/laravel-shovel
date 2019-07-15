@@ -4,6 +4,7 @@ namespace Shovel;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 
 class ShovelServiceProvider extends ServiceProvider
@@ -29,9 +30,12 @@ class ShovelServiceProvider extends ServiceProvider
      */
     private function registerMacros()
     {
-        Response::macro('withMeta', function ($key, $value) {
+        $withMeta = function ($key, $value) {
             Arr::set($this->additionalMeta, $key, $value);
             return $this;
-        });
+        };
+
+        Response::macro('withMeta', $withMeta);
+        ResponseFactory::macro('withMeta', $withMeta);
     }
 }
