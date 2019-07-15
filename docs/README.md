@@ -1,6 +1,7 @@
 # Getting Started
 
-## For version 1.*
+## For version 1.\*
+
 See the [version 1 documentation here](https://github.com/stephenlake/laravel-shovel/blob/44940d2a884ff0c17084abeedde0e537bb8cf5f0/docs/README.md).
 
 ## Install the package via composer
@@ -32,7 +33,7 @@ Shovel will automatically cast paginated objects, models, collections and resour
 Imagine your project contains a `Post` model.
 
 ```php
-response()->shovel(Post::first());
+response(Post::first());
 ```
 
 Will result in the following structured result:
@@ -52,6 +53,7 @@ Will result in the following structured result:
 ```
 
 Or multiple models:
+
 ```php
 response(Post::get());
 ```
@@ -81,6 +83,7 @@ Will result in the following structured result:
 ### Copy/Paste Example
 
 routes/web.php
+
 ```php
 use Illuminate\Http\Resources\Json\Resource;
 use App\User;
@@ -108,44 +111,19 @@ Route::get('/users/resources', function(){
 Route::get('/users/resources/paginated', function(){
     return response(Resource::collection(User::paginate()));
 });
-
-Route::get('/error/default-code', function() {
-
-    $message = request('message', 'This is an example error message');
-
-    return response()->withError($message);
-});
-
-Route::get('/error/with-custom-code', function() {
-
-    $message = request('message', 'This is an example error message');
-    $code    = request('code', 422);
-
-    return response()->withError($message, $code);
-});
-
-Route::get('/added-meta', function() {
-    return response(['Foo' => 'Bar'])->withMeta('some.awesome.key', [
-        'this' => 'is',
-        'new'  => 'meta'
-    ]);
-});
-
-Route::get('/added-messages', function() {
-    return response(['Foo' => 'Bar'])->withMessage([
-        'You are a message',
-        'I am a message'
-    ]);
-});
 ```
 
-### Errors
+## Messages
 
-#### Setting error messages
-You can easily provide error messages by appending the `->withError()` method to the shovel instance:
+### Customizing messages
+
+You can easily override messages using the `->withMeta()` method:
 
 ```php
-response()->withError('This is my error', 500);
+response()
+    ->withMeta('status', 'error')
+    ->withMeta('code', 500)
+    ->withMeta('message', 'This is my error message');
 ```
 
 And will result in the following structured result:
@@ -160,62 +138,27 @@ And will result in the following structured result:
 }
 ```
 
-If you do not provide an error message, the default HTTP response message will be used for the associated HTTP status code.
+### Multiple messages
 
-```php
-response()->withError(404);
-```
-
-And will result in the following structured result:
-
-```json
-{
-  "meta": {
-    "status": "error",
-    "message": "Not found",
-    "code": 404
-  }
-}
-```
-
-Of course you may also provide a custom error message without providing an error code which will fall back to the default '422':
-
-```php
-response()->withError('Some error was encountered');
-```
-
-And will result in the following structured result:
-
-```json
-{
-  "meta": {
-    "status": "error",
-    "message": "Some error was encountered",
-    "code": 422
-  }
-}
-```
-
-#### Setting multiple error messages
 There may be situations where the single error message response does not suit your needs, you may define multiple message lines:
 
 ```php
-response()->withMessage([
+response()->withMeta('messages', [
   'This is my first error',
   'This is my second error'
 ]);
 ```
 
 ## Pagination
+
 When working with paginated models, collections or resources, shovel does the dirty work for you, and there's no additional code required, the output however has a few additional attributes:
 
 ```php
-$paginatedPosts = Post::paginate();
-
-response()->shovel($paginatedPosts);
+response(Post::paginate());
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -241,9 +184,11 @@ Produces:
 ```
 
 ## JSON Resources
+
 For resource objects, the same rule as pagination applies, the code doesn't change, but the output may depending on whether it's a paginated resource, collection or single object:
 
 ### Single JSON Resource
+
 ```php
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -253,6 +198,7 @@ response(new Resource($post));
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -268,6 +214,7 @@ Produces:
 ```
 
 ### Collection JSON Resources
+
 ```php
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -277,6 +224,7 @@ response(Resource::collection($posts));
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -296,6 +244,7 @@ Produces:
 ```
 
 ### Paginated JSON Resources
+
 ```php
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -305,6 +254,7 @@ response(Resource::collection($paginatedPosts));
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -330,14 +280,17 @@ Produces:
 ```
 
 ## Extra Meta Data
+
 There may be situations where you need to append additional attributes to the meta data block which can be done in two ways:
 
 ## Single Field Meta
+
 ```php
 response('Some Data')->withMeta('key', 'value');
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -351,11 +304,13 @@ Produces:
 ```
 
 ## Dot Notation Field Meta
+
 ```php
 response('Some Data')->withMeta('my.nested.key', 'value');
 ```
 
 Produces:
+
 ```json
 {
   "meta": {
@@ -373,4 +328,5 @@ Produces:
 ```
 
 ## Supported HTTP Status Codes
+
 For a full list of support HTTP codes and their descriptions, see the [HTTP.php](https://github.com/stephenlake/laravel-shovel/blob/master/src/HTTP.php) file.
