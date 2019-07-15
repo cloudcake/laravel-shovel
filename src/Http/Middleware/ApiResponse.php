@@ -3,10 +3,12 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
+use Exception;
 use ArrayObject;
 use Commons\When;
 use JsonSerializable;
 use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -112,14 +114,17 @@ class ApiResponse implements \Shovel\HTTP
      */
     private function shouldBeBuilt($response)
     {
-        return ($response->status() != 500) && (
-            is_null($response->original) ||
-            $response->original instanceof Arrayable ||
-            $response->original instanceof Jsonable ||
-            $response->original instanceof ArrayObject ||
-            $response->original instanceof JsonSerializable ||
-            is_array($response->original)
-        );
+        return
+            !($response->original instanceof RedirectResponse) &&
+            !($response->original instanceof Exception) &&
+            (
+                is_null($response->original) ||
+                $response->original instanceof Arrayable ||
+                $response->original instanceof Jsonable ||
+                $response->original instanceof ArrayObject ||
+                $response->original instanceof JsonSerializable ||
+                is_array($response->original)
+            );
     }
 
     /**
