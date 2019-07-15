@@ -156,9 +156,9 @@ class ApiResponse implements \Shovel\HTTP
     {
         $payload = [
             $metaTag => [
+               'code'    => $response->status(),
                'status'  => $this->getStatus($response->status()),
                'message' => $this->getStatusMessage($response->status()),
-               'code'    => $response->status(),
              ]
          ];
 
