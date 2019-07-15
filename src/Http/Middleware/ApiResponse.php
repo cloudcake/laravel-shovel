@@ -25,7 +25,7 @@ class ApiResponse implements \Shovel\HTTP
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($request->wantsJson(), function () use ($response, $options) {
+        $response = When::isTrue($request->expectsJson(), function () use ($response, $options) {
             $this->beforeResponding($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
