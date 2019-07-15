@@ -17,9 +17,9 @@ class ApiResponse
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response) {
+        $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response, $options) {
             $this->beforeResponding($response);
-            return $this->buildPayload($response);
+            return $this->buildPayload($response, ...$options);
         }, $response);
 
         return $response;
