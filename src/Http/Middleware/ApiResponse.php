@@ -5,9 +5,16 @@ namespace Shovel\Http\Middleware;
 use Closure;
 use Commons\When;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse implements \Shovel\HTTP
 {
+    private $acceptedResponses = [
+        \Illuminate\Http\Response::class,
+        \Illuminate\Http\JsonResponse::class,
+        \Illuminate\Routing\ResponseFactory::class,
+    ];
+
     /**
      * Handle the response.
      *
@@ -19,7 +26,7 @@ class ApiResponse implements \Shovel\HTTP
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($request->expectsJson(), function () use ($response, $options) {
+        $response = When::isTrue($this->shouldBuild($request, $response), function () use ($response, $options) {
             $this->beforeResponding($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
@@ -65,11 +72,11 @@ class ApiResponse implements \Shovel\HTTP
             }
         }
 
-        if ($response instanceof \Illuminate\Http\JsonResponse) {
-            $response->setContent(json_encode($payload));
-        } else {
+      //  if ($response instanceof \Illuminate\Http\JsonResponse) {
+      //      $response->setContent(json_encode($payload));
+      //  } else {
             $response->setContent($payload);
-        }
+      //  }
 
         return $response;
     }
@@ -163,5 +170,17 @@ class ApiResponse implements \Shovel\HTTP
             'pages'    => $paginator->lastPage(),
             'limit'    => intval($paginator->perPage()),
         ];
+    }
+
+    /**
+     * Determine if the response should be built.
+     *
+     * @param \Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Request $request
+     * @return bool
+     */
+    private function shouldBuild($request, $response)
+    {
+        return $request->expectsJson() && in_array(get_class($response), $this->acceptedResponses);
     }
 }
