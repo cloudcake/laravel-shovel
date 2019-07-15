@@ -34,7 +34,7 @@ class ApiResponse implements \Shovel\HTTP
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($request->wantsJson() && $this->shouldBeBuilt($response), function () use ($response, $options) {
+        $response = When::isTrue($request->wantsJson(), function () use ($response, $options) {
             $this->beforeResponding($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
@@ -111,26 +111,6 @@ class ApiResponse implements \Shovel\HTTP
     private function getStatusMessage(int $code)
     {
         return self::CODES[$code] ?? 'Unknown';
-    }
-
-    /**
-     * Determines if the response should be handled by Shovel.
-     *
-     * @param \Illuminate\Http\Response $response
-     * @return bool
-     */
-    private function shouldBeBuilt($response)
-    {
-        return
-            !in_array(get_class($response->original), $this->dontBuild) &&
-            (
-                is_null($response->original) ||
-                $response->original instanceof Arrayable ||
-                $response->original instanceof Jsonable ||
-                $response->original instanceof ArrayObject ||
-                $response->original instanceof JsonSerializable ||
-                is_array($response->original)
-            );
     }
 
     /**
