@@ -23,7 +23,7 @@ Add `Shovel\ShovelServiceProvider::class` to the `providers` array in `config/ap
 This will publish the middleware to app/Http/Middleware. Change this if you do not use the default namespace, remember to update the middleware class namespace as well.
 
 ## Register middleware
-In `app/Http/Middleware.php`, add the `ApiResponse` class to your global middleware:
+In `app/Http/Middleware.php`, register the middleware `\App\Http\Middleware\ApiResponse` where you will always have API responses. Important: Do not add this middleware globally, it will cause unexpected results in non-API routes.
 
 ```php
 /**
