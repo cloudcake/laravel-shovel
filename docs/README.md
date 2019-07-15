@@ -22,6 +22,28 @@ Add `Shovel\ShovelServiceProvider::class` to the `providers` array in `config/ap
 
 This will publish the middleware to app/Http/Middleware. Change this if you do not use the default namespace, remember to update the middleware class namespace as well.
 
+## Register middleware
+In `app/Http/Middleware.php`, add the `ApiResponse` class to your global middleware:
+
+```php
+/**
+ * The application's global HTTP middleware stack.
+ *
+ * These middleware are run during every request to your application.
+ *
+ * @var array
+ */
+protected $middleware = [
+    \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+    \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+    \App\Http\Middleware\TrimStrings::class,
+    \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+    \App\Http\Middleware\TrustProxies::class,
+    \App\Http\Middleware\ApiResponse::class,
+];
+```
+That's it, you're done.
+
 # Usage
 
 Shovel will automatically cast paginated objects, models, collections and resource object to their appropriate formats so you don't need to.
