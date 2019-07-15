@@ -4,6 +4,7 @@ namespace Shovel;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,7 @@ class ShovelServiceProvider extends ServiceProvider
         };
 
         Response::macro('withMeta', $withMeta);
+        JsonResponse::macro('withMeta', $withMeta);
         ResponseFactory::macro('withMeta', $withMeta);
     }
 }
