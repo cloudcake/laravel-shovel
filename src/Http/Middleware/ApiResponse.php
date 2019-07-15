@@ -30,16 +30,20 @@ class ApiResponse
         return $response;
     }
 
-    private function buildPayload($response, $metaTag = 'meta', $dataTag = 'data', $paginationTag = 'pagination')
+    private function buildPayload($response, ...$options)
     {
+        $metaTag = $options[0] ?? 'meta';
+        $dataTag = $options[1] ?? 'data';
+        $pageTag = $options[2] ?? 'pagination';
+
         $payload = $this->getMetaBlock($response, $metaTag);
 
         if ($response->content()) {
             if ($this->isPaginated($response)) {
-                $payload[$metaTag][$paginationTag] = $this->getPaginationBlock($response->original);
+                $payload[$metaTag][$pageTag] = $this->getPaginationBlock($response->original);
                 $payload[$dataTag] = $response->original->items();
             } elseif ($this->isPaginatedCollection($response)) {
-                $payload[$metaTag][$paginationTag] = $this->getPaginationBlock($response->original->resource);
+                $payload[$metaTag][$pageTag] = $this->getPaginationBlock($response->original->resource);
                 $payload[$dataTag] = $response->original->resource->items();
             } else {
                 $payload[$dataTag] = json_decode($response->content());
