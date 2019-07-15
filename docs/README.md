@@ -25,23 +25,6 @@ This will publish the middleware to app/Http/Middleware. Change this if you do n
 ## Register middleware
 In `app/Http/Middleware.php`, register the middleware `\App\Http\Middleware\ApiResponse` where you will always have API responses. Important: Do not add this middleware globally, it will cause unexpected results in non-API routes.
 
-```php
-/**
- * The application's global HTTP middleware stack.
- *
- * These middleware are run during every request to your application.
- *
- * @var array
- */
-protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-    \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-    \App\Http\Middleware\TrimStrings::class,
-    \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-    \App\Http\Middleware\TrustProxies::class,
-    \App\Http\Middleware\ApiResponse::class,
-];
-```
 That's it, you're done.
 
 # Usage
