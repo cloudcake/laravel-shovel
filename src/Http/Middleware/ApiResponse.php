@@ -3,12 +3,10 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
-use Exception;
 use ArrayObject;
 use Commons\When;
 use JsonSerializable;
 use Illuminate\Http\Response;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -16,6 +14,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse implements \Shovel\HTTP
 {
+    /**
+     * List of classes to ignore.
+     *
+     * @var array
+     */
+    private $dontBuild = [
+        \Exception::class,
+    ];
+
     /**
      * Handle the response.
      *
@@ -27,7 +34,7 @@ class ApiResponse implements \Shovel\HTTP
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response, $options) {
+        $response = When::isTrue($request->wantsJson() && $this->shouldBeBuilt($response), function () use ($response, $options) {
             $this->beforeResponding($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
@@ -115,8 +122,7 @@ class ApiResponse implements \Shovel\HTTP
     private function shouldBeBuilt($response)
     {
         return
-            !($response->original instanceof RedirectResponse) &&
-            !($response->original instanceof Exception) &&
+            !in_array(get_class($response->original), $this->dontBuild) &&
             (
                 is_null($response->original) ||
                 $response->original instanceof Arrayable ||
