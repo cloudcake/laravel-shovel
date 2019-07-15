@@ -10,8 +10,8 @@ class ApiResponse extends Middleware
     /**
      * Allow transforming of response before it is returned.
      *
-     * @param Illuminate\Http\Response $response
-     * @return Illuminate\Http\Response
+     * @param \Illuminate\Http\Response $response
+     * @return \Illuminate\Http\Response
      */
     protected function beforeResponding(Response $response)
     {

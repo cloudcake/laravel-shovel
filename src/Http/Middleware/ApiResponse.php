@@ -18,10 +18,10 @@ class ApiResponse implements HTTP
     /**
      * Handle the response.
      *
-     * @param Illuminate\Http\Request $request
-     * @param Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure  $next
      * @param string[] ...$options
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function handle($request, Closure $next, ...$options)
     {
@@ -37,8 +37,8 @@ class ApiResponse implements HTTP
     /**
      * Allow transforming of response before it is returned.
      *
-     * @param Illuminate\Http\Response $response
-     * @return Illuminate\Http\Response
+     * @param \Illuminate\Http\Response $response
+     * @return \Illuminate\Http\Response
      */
     protected function beforeResponding($response)
     {
@@ -48,9 +48,9 @@ class ApiResponse implements HTTP
     /**
      * Construct the response payload.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @param string[] ...$options
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     private function buildPayload($response, ...$options)
     {
@@ -108,7 +108,7 @@ class ApiResponse implements HTTP
     /**
      * Determines if the response should be handled by Shovel.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @return bool
      */
     private function shouldBeBuilt($response)
@@ -126,7 +126,7 @@ class ApiResponse implements HTTP
     /**
      * Returns true if the response is a paginated object.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @return bool
      */
     private function isPaginated($response)
@@ -137,7 +137,7 @@ class ApiResponse implements HTTP
     /**
      * Returns true if the response is a paginated collection.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @return bool
      */
     private function isPaginatedCollection($response)
@@ -149,7 +149,7 @@ class ApiResponse implements HTTP
     /**
      * Constructs and returns the meta object.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @param string $metaTag
      * @return array
      */
@@ -173,7 +173,7 @@ class ApiResponse implements HTTP
     /**
      * Constructs and returns the pagination object.
      *
-     * @param Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Response $response
      * @return array
      */
     private function getPaginationBlock($paginator)
