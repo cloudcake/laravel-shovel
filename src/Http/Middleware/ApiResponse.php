@@ -34,11 +34,24 @@ class ApiResponse implements HTTP
         return $response;
     }
 
+    /**
+     * Allow transforming of response before it is returned.
+     *
+     * @param Illuminate\Http\Response $response
+     * @return Illuminate\Http\Response
+     */
     protected function beforeResponding($response)
     {
         return $response;
     }
 
+    /**
+     * Construct the response payload.
+     *
+     * @param Illuminate\Http\Response $response
+     * @param string[] ...$options
+     * @return Illuminate\Http\Response
+     */
     private function buildPayload($response, ...$options)
     {
         $metaTag = $options[0] ?? 'meta';
@@ -64,7 +77,13 @@ class ApiResponse implements HTTP
         return $response;
     }
 
-    private function getStatus($code)
+    /**
+     * Returns a string defining whether or not the response is successful.
+     *
+     * @param int $code
+     * @return string
+     */
+    private function getStatus(int $code)
     {
         $range = substr($code, 0, 1);
 
@@ -75,11 +94,23 @@ class ApiResponse implements HTTP
         return 'success';
     }
 
-    private function getStatusMessage($code)
+    /**
+     * Returns the text representation of the HTTP status code.
+     *
+     * @param int $code
+     * @return string
+     */
+    private function getStatusMessage(int $code)
     {
         return self::CODES[$code] ?? 'Unknown';
     }
 
+    /**
+     * Determines if the response should be handled by Shovel.
+     *
+     * @param Illuminate\Http\Response $response
+     * @return bool
+     */
     private function shouldBeBuilt($response)
     {
         return ($response->status() != 500) && (
@@ -92,17 +123,36 @@ class ApiResponse implements HTTP
         );
     }
 
+    /**
+     * Returns true if the response is a paginated object.
+     *
+     * @param Illuminate\Http\Response $response
+     * @return bool
+     */
     private function isPaginated($response)
     {
         return $response->original instanceof LengthAwarePaginator;
     }
 
+    /**
+     * Returns true if the response is a paginated collection.
+     *
+     * @param Illuminate\Http\Response $response
+     * @return bool
+     */
     private function isPaginatedCollection($response)
     {
         return isset($response->original->resource) &&
                $response->original->resource instanceof LengthAwarePaginator;
     }
 
+    /**
+     * Constructs and returns the meta object.
+     *
+     * @param Illuminate\Http\Response $response
+     * @param string $metaTag
+     * @return array
+     */
     private function getMetaBlock($response, $metaTag)
     {
         $payload = [
@@ -120,6 +170,12 @@ class ApiResponse implements HTTP
         return $payload;
     }
 
+    /**
+     * Constructs and returns the pagination object.
+     *
+     * @param Illuminate\Http\Response $response
+     * @return array
+     */
     private function getPaginationBlock($paginator)
     {
         return [
