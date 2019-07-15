@@ -3,7 +3,6 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
-use Shovel\HTTP;
 use ArrayObject;
 use Commons\When;
 use JsonSerializable;
@@ -13,7 +12,7 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ApiResponse implements HTTP
+class ApiResponse implements \Shovel\HTTP
 {
     /**
      * Handle the response.
