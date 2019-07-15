@@ -8,10 +8,10 @@ use ArrayObject;
 use Commons\When;
 use JsonSerializable;
 use Illuminate\Http\Response;
+use Illuminate\Routing\ResponseFactory;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Routing\ResponseFactory;
 
 class ApiResponse implements HTTP
 {
