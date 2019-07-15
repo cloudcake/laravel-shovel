@@ -10,16 +10,15 @@ use Illuminate\Http\Response;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Routing\ResponseFactory;
 
 class ApiResponse
 {
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-
-        $this->beforeResponding($response);
-
         $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response) {
+            $this->beforeResponding($response);
             return $this->buildPayload($response);
         }, $response);
 
@@ -112,11 +111,14 @@ class ApiResponse
 
     private function shouldBeBuilt($response)
     {
-        return $response->original instanceof Arrayable ||
-               $response->original instanceof Jsonable ||
-               $response->original instanceof ArrayObject ||
-               $response->original instanceof JsonSerializable ||
-               is_array($response->original);
+        return ($response->status() != 500) && (
+            is_null($response->content()) ||
+            $response->original instanceof Arrayable ||
+            $response->original instanceof Jsonable ||
+            $response->original instanceof ArrayObject ||
+            $response->original instanceof JsonSerializable ||
+            is_array($response->original)
+        );
     }
 
     private function isPaginated($response)
