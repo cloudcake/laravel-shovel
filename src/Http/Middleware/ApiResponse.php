@@ -15,15 +15,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ApiResponse implements \Shovel\HTTP
 {
     /**
-     * List of classes to ignore.
-     *
-     * @var array
-     */
-    private $dontBuild = [
-        \Exception::class,
-    ];
-
-    /**
      * Handle the response.
      *
      * @param \Illuminate\Http\Request $request
