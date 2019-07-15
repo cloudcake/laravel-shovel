@@ -3,17 +3,25 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
+use ArrayObject;
 use Commons\When;
+use JsonSerializable;
 use Illuminate\Http\Response;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse
 {
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($response instanceof Response, $this->buildPayload(), $response);
 
         $this->beforeResponding($response);
+
+        $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response) {
+            return $this->buildPayload($response);
+        }, $response);
 
         return $response;
     }
@@ -23,22 +31,23 @@ class ApiResponse
         return $response;
     }
 
-    private function buildPayload($response)
+    private function buildPayload($response, $metaTag = 'meta', $dataTag = 'data', $paginationTag = 'pagination')
     {
-        $payload = [
-            'meta' => [
-               'code'    => $response->status(),
-               'status'  => $this->getStatus($response->status()),
-               'message' => $this->getStatusMessage($response->status())
-             ],
-             'data' => $response->content(),
-         ];
+        $payload = $this->getMetaBlock($response, $metaTag);
 
-        When::isTrue(!$payload['data'], function () use (&$payload) {
-            unset($payload['data']);
-        });
+        if ($response->content()) {
+            if ($this->isPaginated($response)) {
+                $payload[$metaTag][$paginationTag] = $this->getPaginationBlock($response->original);
+                $payload[$dataTag] = $response->original->items();
+            } elseif ($this->isPaginatedCollection($response)) {
+                $payload[$metaTag][$paginationTag] = $this->getPaginationBlock($response->original->resource);
+                $payload[$dataTag] = $response->original->resource->items();
+            } else {
+                $payload[$dataTag] = json_decode($response->content());
+            }
+        }
 
-        $response->setcontent($payload);
+        $response->setContent($payload);
 
         return $response;
     }
@@ -96,7 +105,55 @@ class ApiResponse
           case 503: return 'Service Unavailable';
           case 504: return 'Gateway Time-out';
           case 505: return 'HTTP Version not supported';
+
           default: return 'unknown';
       }
+    }
+
+    private function shouldBeBuilt($response)
+    {
+        return $response->original instanceof Arrayable ||
+               $response->original instanceof Jsonable ||
+               $response->original instanceof ArrayObject ||
+               $response->original instanceof JsonSerializable ||
+               is_array($response->original);
+    }
+
+    private function isPaginated($response)
+    {
+        return $response->original instanceof LengthAwarePaginator;
+    }
+
+    private function isPaginatedCollection($response)
+    {
+        return isset($response->original->resource) &&
+               $response->original->resource instanceof LengthAwarePaginator;
+    }
+
+    private function getMetaBlock($response, $metaTag)
+    {
+        $payload = [
+            $metaTag => [
+               'status'  => $this->getStatus($response->status()),
+               'message' => $this->getStatusMessage($response->status()),
+               'code'    => $response->status(),
+             ]
+         ];
+
+        if (isset($response->additionalMeta)) {
+            $payload[$metaTag] = array_merge($payload[$metaTag], $response->additionalMeta);
+        }
+
+        return $payload;
+    }
+
+    private function getPaginationBlock($paginator)
+    {
+        return [
+            'records'  => $paginator->total(),
+            'page'     => $paginator->currentPage(),
+            'pages'    => $paginator->lastPage(),
+            'limit'    => intval($paginator->perPage()),
+        ];
     }
 }
