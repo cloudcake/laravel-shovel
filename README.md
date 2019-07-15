@@ -34,7 +34,7 @@ Transform `Post::paginate();` into
   "data": [{...},{...},{...}]
 }
 ```
-By using regular response methods, `response(Post::paginate());` or `response(Resource::collection(Post::paginate())`. 
+Using regular methods, `response(Post::paginate());` or `response(Resource::collection(Post::paginate())`. 
 
 #### See [documentation](https://stephenlake.github.io/laravel-shovel/) for usage.
 
