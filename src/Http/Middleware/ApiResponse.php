@@ -3,14 +3,8 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
-use ArrayObject;
 use Commons\When;
-use JsonSerializable;
 use Illuminate\Http\Response;
-use Illuminate\Routing\ResponseFactory;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse implements \Shovel\HTTP
 {
@@ -71,7 +65,11 @@ class ApiResponse implements \Shovel\HTTP
             }
         }
 
-        $response->setContent($payload);
+        if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $response->setContent(json_encode($payload));
+        } else {
+            $response->setContent($payload);
+        }
 
         return $response;
     }
