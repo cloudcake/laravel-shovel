@@ -15,7 +15,7 @@ use Illuminate\Routing\ResponseFactory;
 
 class ApiResponse implements HTTP
 {
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
         $response = When::isTrue($this->shouldBeBuilt($response), function () use ($response, $options) {
