@@ -72,11 +72,11 @@ class ApiResponse implements \Shovel\HTTP
             }
         }
 
-       if ($response instanceof \Illuminate\Http\JsonResponse) {
-           $response->setContent(json_encode($payload));
-       } else {
+        if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $response->setContent(json_encode($payload));
+        } else {
             $response->setContent($payload);
-       }
+        }
 
         return $response;
     }
