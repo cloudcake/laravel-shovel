@@ -42,6 +42,7 @@ interface HTTP
     const UNSUPPORTED_MEDIA_TYPE = 415;
     const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
     const EXPECTATION_FAILED = 417;
+    const TOO_MANY_REQUESTS = 429;
 
     const INTERNAL_SERVER_ERROR = 500;
     const NOT_IMPLEMENTED = 501;
@@ -82,6 +83,7 @@ interface HTTP
         '413' => 'Request Entity Too Large',
         '414' => 'Request-URI Too Large',
         '415' => 'Unsupported Media Type',
+        '429' => 'Too many requests',
         '500' => 'Internal Server Error',
         '501' => 'Not Implemented',
         '502' => 'Bad Gateway',
