@@ -181,6 +181,6 @@ class ApiResponse implements \Shovel\HTTP
      */
     private function shouldBuild($request, $response)
     {
-        return $request->expectsJson() && in_array(get_class($response), $this->acceptedResponses);
+        return in_array(get_class($response), $this->acceptedResponses);
     }
 }
