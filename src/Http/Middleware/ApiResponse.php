@@ -8,7 +8,7 @@ use Commons\When;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ApiResponse implements Http
+class ApiResponse extends ApiMiddleware implements Http
 {
     /**
      * Acceptable response classes that will be handled.
@@ -37,38 +37,6 @@ class ApiResponse implements Http
         }, $response);
 
         return $response;
-    }
-
-    /**
-     * Mutate keys.
-     *
-     * @param array $payload
-     * @return array
-     */
-    private function mutateKeys(array $data)
-    {
-        $payload = [];
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $value = $this->mutateKeys($value);
-            }
-
-            $payload[$this->mutateKey($key)] = $value;
-        }
-
-        return $payload;
-    }
-
-    /**
-     * Mutate the response keys before the payload is pushed to the client.
-     *
-     * @param string $key
-     * @return string|mixed
-     */
-    protected function mutateKey($key)
-    {
-        return $key;
     }
 
     /**
