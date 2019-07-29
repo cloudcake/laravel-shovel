@@ -54,6 +54,7 @@ interface Http
     const CODES = [
         '100' => 'Continue',
         '101' => 'Switching Protocols',
+
         '200' => 'OK',
         '201' => 'Created',
         '202' => 'Accepted',
@@ -61,12 +62,14 @@ interface Http
         '204' => 'No Content',
         '205' => 'Reset Content',
         '206' => 'Partial Content',
+
         '300' => 'Multiple Choices',
         '301' => 'Moved Permanently',
         '302' => 'Moved Temporarily',
         '303' => 'See Other',
         '304' => 'Not Modified',
         '305' => 'Use Proxy',
+
         '400' => 'Bad Request',
         '401' => 'Unauthorized',
         '402' => 'Payment Required',
@@ -84,6 +87,7 @@ interface Http
         '414' => 'Request-URI Too Large',
         '415' => 'Unsupported Media Type',
         '429' => 'Too many requests',
+        
         '500' => 'Internal Server Error',
         '501' => 'Not Implemented',
         '502' => 'Bad Gateway',
