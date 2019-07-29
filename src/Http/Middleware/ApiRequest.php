@@ -19,14 +19,33 @@ class ApiRequest
     }
 
     /**
-     * Mutate the request key after the payload has been received. This allows
-     * changing the casing (or anything else) of each key in the payload before
-     * it is forwarded to the rest of the Laravel Application.
+     * Mutate keys.
+     *
+     * @param array $payload
+     * @return array
+     */
+    private function mutateKeys(array $data)
+    {
+        $payload = [];
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $value = $this->mutateKeys($value);
+            }
+
+            $payload[$this->mutateKey($key)] = $value;
+        }
+
+        return $payload;
+    }
+
+    /**
+     * Mutate the request keys before the payload is processed by the app.
      *
      * @param string $key
      * @return string|mixed
      */
-    protected function keyMutator($key)
+    protected function mutateKey($key)
     {
         return $key;
     }

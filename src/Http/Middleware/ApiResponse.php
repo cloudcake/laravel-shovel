@@ -33,7 +33,6 @@ class ApiResponse implements Http
     {
         $response = $next($request);
         $response = When::isTrue($this->shouldBuild($request, $response), function () use ($response, $options) {
-            $this->beforeResponding($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
 
@@ -41,14 +40,33 @@ class ApiResponse implements Http
     }
 
     /**
+     * Mutate keys.
+     *
+     * @param array $payload
+     * @return array
+     */
+    private function mutateKeys(array $data)
+    {
+        $payload = [];
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $value = $this->mutateKeys($value);
+            }
+
+            $payload[$this->mutateKey($key)] = $value;
+        }
+
+        return $payload;
+    }
+
+    /**
      * Mutate the response keys before the payload is pushed to the client.
-     * This allows changing the casing (or anything else) of each key in the
-     * payload before it is forwarded to the requesting client.
      *
      * @param string $key
      * @return string|mixed
      */
-    protected function keyMutator($key)
+    protected function mutateKey($key)
     {
         return $key;
     }
@@ -78,6 +96,10 @@ class ApiResponse implements Http
             } else {
                 $payload[$dataTag] = json_decode($response->content());
             }
+        }
+
+        if (isset($payload[$dataTag])) {
+            $payload[$dataTag] = $this->mutateKeys($payload[$dataTag]);
         }
 
         if ($response instanceof \Illuminate\Http\JsonResponse) {
