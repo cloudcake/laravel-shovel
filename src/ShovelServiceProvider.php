@@ -32,10 +32,10 @@ class ShovelServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/laravel-shovel.php' => config_path('laravel-shovel.php'),
+            __DIR__.'/../config/shovel.php' => config_path('shovel.php'),
         ], 'config');
 
-        $middleware = config('laravel-shovel.middleware', [
+        $middleware = config('shovel.middleware', [
             'request' => \Shovel\Http\Middleware\ApiRequest::class,
             'response' => \Shovel\Http\Middleware\ApiResponse::class,
         ]);
