@@ -3,12 +3,18 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
+use Shovel\Http;
 use Commons\When;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ApiResponse implements \Shovel\HTTP
+class ApiResponse implements Http
 {
+    /**
+     * Acceptable response classes that will be handled.
+     *
+     * @var array
+     */
     private $acceptedResponses = [
         \Illuminate\Http\Response::class,
         \Illuminate\Http\JsonResponse::class,
@@ -35,14 +41,16 @@ class ApiResponse implements \Shovel\HTTP
     }
 
     /**
-     * Allow transforming of response before it is returned.
+     * Mutate the response keys before the payload is pushed to the client.
+     * This allows changing the casing (or anything else) of each key in the
+     * payload before it is forwarded to the requesting client.
      *
-     * @param \Illuminate\Http\Response $response
-     * @return \Illuminate\Http\Response
+     * @param string $key
+     * @return string|mixed
      */
-    protected function beforeResponding($response)
+    protected function keyMutator($key)
     {
-        return $response;
+        return $key;
     }
 
     /**
