@@ -89,12 +89,12 @@ class ApiResponse implements Http
         if ($response->content()) {
             if ($this->isPaginated($response)) {
                 $payload[$metaTag][$pageTag] = $this->getPaginationBlock($response->original);
-                $payload[$dataTag] = $response->original->items();
+                $payload[$dataTag] = $response->original->items()->toArray();
             } elseif ($this->isPaginatedCollection($response)) {
                 $payload[$metaTag][$pageTag] = $this->getPaginationBlock($response->original->resource);
-                $payload[$dataTag] = $response->original->resource->items();
+                $payload[$dataTag] = $response->original->resource->items()->toArray();
             } else {
-                $payload[$dataTag] = json_decode($response->content());
+                $payload[$dataTag] = json_decode($response->content(), true);
             }
         }
 
