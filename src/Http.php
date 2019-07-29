@@ -2,7 +2,7 @@
 
 namespace Shovel;
 
-interface HTTP
+interface Http
 {
     const CONTINUE = 100;
     const SWITCHING_PROTOCOLS = 101;
