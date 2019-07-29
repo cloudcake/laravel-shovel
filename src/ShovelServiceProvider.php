@@ -31,8 +31,17 @@ class ShovelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['router']->aliasMiddleware('ApiRequest', $this->requestMiddleware);
-        $this->app['router']->aliasMiddleware('ApiResponse', $this->responseMiddleware);
+        $this->publishes([
+            __DIR__.'/../config/laravel-shovel.php' => config_path('laravel-shovel.php'),
+        ], 'config');
+
+        $middleware = config('laravel-shovel.middleware', [
+            'request' => \Shovel\Http\Middleware\ApiRequest::class,
+            'response' => \Shovel\Http\Middleware\ApiResponse::class,
+        ]);
+
+        $this->app['router']->aliasMiddleware('ApiRequest', $middleware['request']);
+        $this->app['router']->aliasMiddleware('ApiResponse', $middleware['response']);
 
         $withMeta = function ($key, $value) {
             Arr::set($this->additionalMeta, $key, $value);
