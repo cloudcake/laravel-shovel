@@ -11,20 +11,6 @@ use Illuminate\Support\ServiceProvider;
 class ShovelServiceProvider extends ServiceProvider
 {
     /**
-     * The middleware that should handle HTTP requests.
-     *
-     * @var string
-     */
-    protected $requestMiddleware = \Shovel\Http\Middleware\ApiRequest::class;
-
-    /**
-     * The middleware that should handle HTTP responses.
-     *
-     * @var string
-     */
-    protected $responseMiddleware = \Shovel\Http\Middleware\ApiResponse::class;
-
-    /**
      * Boot up Shovel.
      *
      * @return void
