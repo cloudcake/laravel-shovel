@@ -16,6 +16,9 @@ class ApiRequest extends ApiMiddleware
      */
     public function handle($request, Closure $next, ...$options)
     {
+        $request->replace($this->mutateKeys($request->all()));
+
+        return $next($request);
     }
 
     /**
