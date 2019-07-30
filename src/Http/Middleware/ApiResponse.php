@@ -61,7 +61,7 @@ class ApiResponse extends ApiMiddleware implements Http
                 $payload[$dataTag] = $response->original->items()->toArray();
             } elseif ($this->isPaginatedCollection($response)) {
                 $payload[$metaTag][$pageTag] = $this->getPaginationBlock($response->original->resource);
-                $payload[$dataTag] = $response->original->resource->items()->toArray();
+                $payload[$dataTag] = $response->original->resource->items();
             } else {
                 $payload[$dataTag] = json_decode($response->content(), true);
             }
