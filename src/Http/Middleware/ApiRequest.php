@@ -3,6 +3,7 @@
 namespace Shovel\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class ApiRequest extends ApiMiddleware
 {
@@ -12,11 +13,12 @@ class ApiRequest extends ApiMiddleware
      * @param \Illuminate\Http\Request $request
      * @param \Closure  $next
      * @param string[] ...$options
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function handle($request, Closure $next, ...$options)
     {
         $request->replace($this->mutateKeys($request->all()));
+        $request = $this->hook($request);
 
         return $next($request);
     }
@@ -30,5 +32,16 @@ class ApiRequest extends ApiMiddleware
     protected function mutateKey($key)
     {
         return $key;
+    }
+
+    /**
+     * Hook into the request before forwarding.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Request
+     */
+    protected function hook(Request $request)
+    {
+        return $request;
     }
 }

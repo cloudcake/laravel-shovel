@@ -33,6 +33,7 @@ class ApiResponse extends ApiMiddleware implements Http
     {
         $response = $next($request);
         $response = When::isTrue($this->shouldBuild($request, $response), function () use ($response, $options) {
+            $response = $this->hook($response);
             return $this->buildPayload($response, ...$options);
         }, $response);
 
@@ -191,5 +192,16 @@ class ApiResponse extends ApiMiddleware implements Http
     protected function mutateKey($key)
     {
         return $key;
+    }
+
+    /**
+     * Hook into the response before forwarding.
+     *
+     * @param \Illuminate\Http\Response $response
+     * @return \Illuminate\Http\Response
+     */
+    protected function hook(Response $response)
+    {
+        return $response;
     }
 }
