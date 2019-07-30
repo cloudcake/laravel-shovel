@@ -33,8 +33,7 @@ class ApiResponse extends ApiMiddleware implements Http
     {
         $response = $next($request);
         $response = When::isTrue($this->shouldBuild($request, $response), function () use ($response, $options) {
-            $response = $this->hook($request, $response);
-            return $this->buildPayload($response, ...$options);
+            return $this->buildPayload($this->hook($request, $response), ...$options);
         }, $response);
 
         return $response;
