@@ -37,11 +37,7 @@ Route::middleware(['ApiRequest'])->get('/some/api/route', function() {
 ```php
 Route::group(['middleware' => ['ApiRequest']], function() {
 
-  Route::get('/some/api/route/1', function() {
-    return response(['some' => 'data']);
-  });
-
-  Route::get('/some/api/route/2', function() {
+  Route::get('/some/api/route', function() {
     return response(['some' => 'data']);
   });
 
@@ -65,11 +61,7 @@ Route::middleware(['ApiResponse', 'ApiRequest'])->get('/some/api/route', functio
 ```php
 Route::group(['middleware' => ['ApiResponse', 'ApiRequest']], function() {
 
-  Route::get('/some/api/route/1', function() {
-    return response(['some' => 'data']);
-  });
-
-  Route::get('/some/api/route/2', function() {
+  Route::get('/some/api/route', function() {
     return response(['some' => 'data']);
   });
 
@@ -142,28 +134,30 @@ routes/web.php
 use Illuminate\Http\Resources\Json\Resource;
 use App\User;
 
-Route::get('/users', function(){
-    return response(User::get());
-});
+Route::group(['middleware' => ['ApiRequest', 'ApiResponse']], function() {
+    Route::get('/users', function(){
+        return response(User::get());
+    });
 
-Route::get('/users/first', function(){
-    return response(User::first());
-});
+    Route::get('/users/first', function(){
+        return response(User::first());
+    });
 
-Route::get('/users/paginated', function(){
-    return response(User::paginate());
-});
+    Route::get('/users/paginated', function(){
+        return response(User::paginate());
+    });
 
-Route::get('/users/resource', function(){
-    return response(new Resource(User::first()));
-});
+    Route::get('/users/resource', function(){
+        return response(new Resource(User::first()));
+    });
 
-Route::get('/users/resources', function(){
-    return response(Resource::collection(User::get()));
-});
+    Route::get('/users/resources', function(){
+        return response(Resource::collection(User::get()));
+    });
 
-Route::get('/users/resources/paginated', function(){
-    return response(Resource::collection(User::paginate()));
+    Route::get('/users/resources/paginated', function(){
+        return response(Resource::collection(User::paginate()));
+    });
 });
 ```
 
