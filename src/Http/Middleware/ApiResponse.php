@@ -32,7 +32,7 @@ class ApiResponse extends ApiMiddleware implements Http
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($this->shouldBuild($request, $response), function () use ($response, $options) {
+        $response = When::isTrue($this->shouldBuild($request, $response), function () use ($request, $response, $options) {
             return $this->buildPayload($this->hook($request, $response), ...$options);
         }, $response);
 
