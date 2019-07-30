@@ -16,16 +16,65 @@ This package makes use of Laravel's auto-discovery of service providers. If you 
 
 Add `Shovel\ShovelServiceProvider::class` to the `providers` array in `config/app.php`.
 
-## Publish middleware
-
-`php artisan vendor:publish --provider="Shovel\ShovelServiceProvider" --tag="middleware"`
-
-This will publish the middleware to app/Http/Middleware. Change this if you do not use the default namespace, remember to update the middleware class namespace as well.
-
 ## Register middleware
-In `app/Http/Middleware.php`, register the middleware `\App\Http\Middleware\ApiResponse` where you will always have API responses. Important: Do not add this middleware globally, it will cause unexpected results in non-API routes.
 
-That's it, you're done.
+### Request Middleware
+
+The [Request Middleware](https://github.com/stephenlake/laravel-shovel/blob/master/src/Http/Middleware/ApiRequest.php) is stand-by middleware that allows you to mutate input request data and is aliased as `ApiRequest`. This is useful when your API input data casing does not match your database casing.
+
+To use the middleware on a route or route group, use the alias as follows:
+
+**Through route middleware:**
+
+```php
+Route::middleware(['ApiRequest'])->get('/some/api/route', function() {
+  return response(['some' => 'data']);
+});
+```
+
+**Through route group middleware:**
+
+```php
+Route::group(['middleware' => ['ApiRequest']], function() {
+
+  Route::get('/some/api/route/1', function() {
+    return response(['some' => 'data']);
+  });
+
+  Route::get('/some/api/route/2', function() {
+    return response(['some' => 'data']);
+  });
+
+});
+```
+
+### Response Middleware
+
+The [Response Middleware](https://github.com/stephenlake/laravel-shovel/blob/master/src/Http/Middleware/ApiResponse.php) is the class responsible for building the output response data and is aliased as `ApiResponse`.
+
+**Through route middleware:**
+
+```php
+Route::middleware(['ApiResponse', 'ApiRequest'])->get('/some/api/route', function() {
+  return response(['some' => 'data']);
+});
+```
+
+**Through route group middleware:**
+
+```php
+Route::group(['middleware' => ['ApiResponse', 'ApiRequest']], function() {
+
+  Route::get('/some/api/route/1', function() {
+    return response(['some' => 'data']);
+  });
+
+  Route::get('/some/api/route/2', function() {
+    return response(['some' => 'data']);
+  });
+
+});
+```
 
 # Usage
 
@@ -334,4 +383,4 @@ Produces:
 
 ## Supported HTTP Status Codes
 
-For a full list of support HTTP codes and their descriptions, see the [HTTP.php](https://github.com/stephenlake/laravel-shovel/blob/master/src/HTTP.php) file.
+For a full list of support HTTP codes and their descriptions, see the [HTTP.php](https://github.com/stephenlake/laravel-shovel/blob/master/src/Http.php) file.
