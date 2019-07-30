@@ -26,15 +26,4 @@ class ApiMiddleware
 
         return $payload;
     }
-
-    /**
-     * Mutate the request keys before the payload is processed by the app.
-     *
-     * @param string $key
-     * @return string|mixed
-     */
-    protected function mutateKey($key)
-    {
-        return $key;
-    }
 }
