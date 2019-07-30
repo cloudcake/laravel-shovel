@@ -197,10 +197,11 @@ class ApiResponse extends ApiMiddleware implements Http
     /**
      * Hook into the response before forwarding.
      *
+     * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Http\Response $response
      * @return \Illuminate\Http\Response
      */
-    protected function hook(Response $response)
+    protected function hook($request, $response)
     {
         return $response;
     }
