@@ -375,6 +375,89 @@ Produces:
 }
 ```
 
-## Supported HTTP Status Codes
+# Customization
+
+## Request Middleware
+
+If you need to modify the HTTP request with additional data or format the data before it reaches your business logic, you can create your own ApiRequest middleware extending `Shovel\Http\Middleware\ApiRequest` and do so in the following methods:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Support\Str;
+use Shovel\Http\Middleware\ApiRequest;
+
+class ExtendedApiRequest extends ApiRequest
+{
+    /**
+     * Mutate the request keys before the payload is processed by the app.
+     *
+     * @param string $key
+     * @return string|mixed
+     */
+    protected function mutateKey($key)
+    {
+        return Str::snake($key);
+    }
+
+    /**
+     * Hook into the request before forwarding.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Request
+     */
+    protected function hook(Request $request)
+    {
+        return $request;
+    }
+}
+```
+
+Then edit the `config/shovel.php` configuration to use your custom middleware instead of the default.
+
+## Response Middleware
+
+As with the request middleware, if you need to modify the HTTP response with additional data or format the data before it reaches your consuming client, you can create your own ApiResponse middleware extending `Shovel\Http\Middleware\ApiResponse` and do so in the following methods:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Support\Str;
+use Shovel\Http\Middleware\ApiResponse;
+
+class ExtendedApiResponse extends ApiResponse
+{
+    /**
+     * Mutate the request keys before the payload is processed by the app.
+     *
+     * @param string $key
+     * @return string|mixed
+     */
+    protected function mutateKey($key)
+    {
+        return Str::camel($key);
+    }
+
+    /**
+     * Hook into the response before forwarding.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
+     * @return \Illuminate\Http\Response
+     */
+    protected function hook($request, $response)
+    {
+        return $response;
+    }
+}
+```
+
+Then edit the `config/shovel.php` configuration to use your custom middleware instead of the default.
+
+# Supported HTTP Status Codes
 
 For a full list of support HTTP codes and their descriptions, see the [HTTP.php](https://github.com/stephenlake/laravel-shovel/blob/master/src/Http.php) file.
