@@ -114,6 +114,30 @@ class ShovelTest extends TestCase
         $this->assertTrue($json->data[1]->unit === 'test2');
     }
 
+    public function testResourcePagination()
+    {
+        $request = new Request;
+        $request->headers->set('Accept', 'application/json');
+
+        $response = (new ApiResponse())->handle($request, function ($req) {
+            $collection = collect([['unit' => 'test1'], ['unit' => 'test2']]);
+
+            $response = new Response(Resource::collection(new LengthAwarePaginator($collection, $collection->count(), 1)), 201);
+
+            return $response;
+        });
+
+        $json = json_decode($response->content());
+
+        $this->assertTrue(isset($json->meta));
+        $this->assertTrue(isset($json->data));
+        $this->assertTrue(isset($json->meta->pagination));
+        $this->assertTrue($json->meta->pagination->page === 1);
+        $this->assertTrue($json->meta->pagination->pages === 2);
+        $this->assertTrue($json->meta->code === 201);
+        $this->assertTrue($json->data[0]->unit === 'test1');
+        $this->assertTrue($json->data[1]->unit === 'test2');
+    }
 
     public function testCustomizedFieldNames()
     {
