@@ -19,6 +19,8 @@ class ApiMiddleware
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $value = $this->mutateKeys($value);
+            } elseif ($value instanceof \Illuminate\Http\Resources\Json\Resource) {
+                $value = $this->mutateKeys($value->toArray(null));
             }
 
             $payload[$this->mutateKey($key)] = $value;
