@@ -20,7 +20,7 @@ class ApiMiddleware
             if (is_array($value)) {
                 $value = $this->mutateKeys($value);
             } elseif ($value instanceof \Illuminate\Http\Resources\Json\Resource) {
-                $value = $this->mutateKeys($value->toArray(null));
+                $value = $this->mutateKeys($value->toArray(request()));
             }
 
             $payload[$this->mutateKey($key)] = $value;
