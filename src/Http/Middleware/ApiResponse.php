@@ -4,7 +4,6 @@ namespace Shovel\Http\Middleware;
 
 use Closure;
 use Shovel\Http;
-use Commons\When;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -32,10 +31,11 @@ class ApiResponse extends ApiMiddleware implements Http
     public function handle($request, Closure $next, ...$options)
     {
         $response = $next($request);
-        $response = When::isTrue($this->shouldBuild($request, $response), function () use ($request, $response, $options) {
+
+        if ($this->shouldBuild($request, $response)) {
             $response = $this->hook($request, $response);
-            return $this->buildPayload($response, ...$options);
-        }, $response);
+            $response = $this->buildPayload($response, ...$options);
+        }
 
         return $response;
     }
