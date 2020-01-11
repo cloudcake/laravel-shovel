@@ -1,5 +1,5 @@
 {
-  "name": "stephenlake/laravel-shovel",
+  "name": "cloudcake/laravel-shovel",
   "description": "A minimal package for shovelling data from an API to clients, for Laravel.",
   "type": "library",
   "license": "MIT",
