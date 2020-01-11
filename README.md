@@ -15,7 +15,7 @@ Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
 Install the package via composer.
 
-    composer require stephenlake/laravel-shovel
+    composer require cloudcake/laravel-shovel
     
 Transform `Post::paginate();` into 
 ```
@@ -35,8 +35,6 @@ Transform `Post::paginate();` into
 }
 ```
 Using regular methods, `response(Post::paginate());` or `response(Resource::collection(Post::paginate())`. 
-
-#### See [documentation](https://stephenlake.github.io/laravel-shovel/) for usage.
 
 ## License
 
