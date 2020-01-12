@@ -1,7 +1,6 @@
 # Laravel Shovel
 
 ![tests](https://img.shields.io/travis/stephenlake/laravel-shovel/master.svg?style=flat-square)
-![styleci](https://github.styleci.io/repos/166599210/shield?branch=master&style=flat-square)
 ![scrutinzer](https://img.shields.io/scrutinizer/g/stephenlake/laravel-shovel.svg?style=flat-square)
 ![downloads](https://img.shields.io/packagist/dt/stephenlake/laravel-shovel.svg?style=flat-square)
 ![release](https://img.shields.io/github/release/stephenlake/laravel-shovel.svg?style=flat-square)
