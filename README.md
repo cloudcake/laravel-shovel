@@ -1,6 +1,6 @@
 # Laravel Shovel
 
-![downloads](https://img.shields.io/packagist/dt/cloudcake/laravel-shovel.svg?style=flat-square)
+![downloads](https://img.shields.io/packagist/dt/stephenlake/laravel-shovel.svg?style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
 **Laravel Shovel** is a minimalist package providing Laravel response macros to assist in rapid API development by transforming models, resources, collections, paginated objects and errors into a concise API response format. DRY.
